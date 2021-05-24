@@ -1,0 +1,84 @@
+@keyframes button-hover {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes button-focus {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(30);
+  }
+}
+
+.button {
+  background-color: var(--primary-color);
+  color: var(--primary-contrast-text-color);
+  padding: .4rem 1.5rem;
+  font-size: var(--text-md);
+  cursor: pointer;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  border: solid 1px transparent;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius);
+}
+
+.button:focus::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--primary-dark-color);
+  border-radius: 50%;
+  animation: button-focus 0.6s forwards;
+}
+
+.button--color-secondary {
+  background-color: var(--secondary-color);
+  color: var(--secondary-contrast-text-color);
+}
+
+.button--color-secondary:focus::before {
+  background-color: var(--secondary-dark-color);
+}
+
+.button--color-secondary:focus::before {
+  background-color: var(--secondary-dark-color);
+}
+
+.button--color-success {
+  background-color: var(--success-color);
+  color: var(--success-contrast-text-color);
+}
+
+.button--color-success:focus::before {
+  background-color: var(--success-dark-color);
+}
+
+.button--size-sm {
+  padding: .2rem 0.75rem;
+  font-size: var(--text-sm);
+}
+
+.button--size-lg {
+  padding: 1rem 3.75rem;
+  font-size: var(--text-lg);
+}
+
+.button__content {
+  position: relative;
+}
+
+.button:hover .button__content {
+  animation: button-hover 0.2s forwards;
+}

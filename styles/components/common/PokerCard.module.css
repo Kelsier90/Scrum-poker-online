@@ -1,0 +1,18 @@
+.card {
+  background-color: var(--primary-color);
+  color: var(--primary-contrast-text-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 7rem;
+  font-size: var(--text-xxl);
+  font-weight: bold;
+  border: solid 4px var(--primary-dark-color);
+  border-radius: var(--border-radius);
+  margin: 0.5rem;
+}
+
+.card--status-inactive {
+  opacity: 0.5;
+}

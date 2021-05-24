@@ -1,0 +1,23 @@
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.board__slot {
+  max-width: 100%;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.board__slot--status-current-user {
+  background-color: #c1ca7777;
+}
+
+.board__slot__name {
+  font-size: var(--text-md);
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

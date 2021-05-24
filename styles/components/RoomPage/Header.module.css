@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: solid 1px var(--muted-color);
+  margin-bottom: 1rem;
+}
+
+.header__title {
+  font-size: var(--text-lg);
+}
+
+.header__button {
+  margin-bottom: 0 !important;
+  margin-left: 1rem !important;
+}
