@@ -3,10 +3,10 @@ import RoomMongoModel from '../../rooms/infrastructure/RoomMongoModel'
 
 export default abstract class MongoRepository {
   protected connect(): Promise<Mongoose> {
-    return mongoose.connect(
-      `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`,
-      { useNewUrlParser: true, useUnifiedTopology: true }
-    )
+    return mongoose.connect(process.env.DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
   }
 
   protected async saveDocument(doc: mongoose.Document): Promise<void> {
