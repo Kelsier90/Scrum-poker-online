@@ -1,0 +1,19 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.root--spacing-0 > * {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.root--spacing-1 > * {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.root--spacing-2 > * {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}

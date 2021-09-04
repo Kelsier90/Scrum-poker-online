@@ -1,18 +1,27 @@
 import React from 'react'
 import Button from '../common/Button'
-import TypeNameModal from './TypeNameModal'
-import useUser from '../../Utils/user/useUser'
+import SetUserNameModal from '../common/SetUserNameModal'
+import useCreateRoom from '../../apiClient/useCreateRoom'
+import useRedirect from '../../shared/router/useRedirect'
+import { useNotifications } from '../common/NotificationsProvider'
 
 const CreateRoomContainer = () => {
   const [openModal, setOpenModal] = React.useState<boolean>(false)
-  const [, setUser] = useUser()
+  const redirect = useRedirect()
+
+  const createRoom = useCreateRoom()
 
   const handleClick = () => {
     setOpenModal(true)
   }
 
+  const { addNotification } = useNotifications()
+
   const handleSubmit = ({ user }: { user: string }) => {
-    setUser(user)
+    createRoom({ userName: user }, data => {
+      redirect(`/rooms/${data.id}?askForName=0`)
+      addNotification('info', 'Room created')
+    })
 
     setOpenModal(false)
   }
@@ -23,7 +32,7 @@ const CreateRoomContainer = () => {
         Create new Room
       </Button>
 
-      <TypeNameModal
+      <SetUserNameModal
         open={openModal}
         onClose={() => setOpenModal(false)}
         onSubmit={handleSubmit}

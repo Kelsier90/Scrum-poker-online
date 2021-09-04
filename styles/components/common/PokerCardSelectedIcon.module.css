@@ -1,0 +1,5 @@
+.root {
+  max-width: 50%;
+  max-height: 50%;
+  stroke: var(--primary-contrast-text-color);
+}

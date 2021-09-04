@@ -1,8 +1,8 @@
-import styles from '../styles/Home.module.css'
+import styles from '@styles/Home.module.css'
 
-import Container from '../src/components/common/Container'
-import CreateRoomContainer from '../src/components/HomePage/CreateRoomContainer'
-import JoinRoomContainer from '../src/components/HomePage/JoinRoomContainer'
+import Container from '@src/components/common/Container'
+import CreateRoomContainer from '@src/components/HomePage/CreateRoomContainer'
+import JoinRoomContainer from '@src/components/HomePage/JoinRoomContainer'
 
 export default function Home() {
   return (

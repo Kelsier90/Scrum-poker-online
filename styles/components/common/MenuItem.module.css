@@ -1,0 +1,15 @@
+.root {
+  display: block;
+  padding: 0.75rem 1rem;
+  font-size: var(--text-sm);
+  background-color: var(--background-content-color);
+  color: var(--background-content-contrast-text-color);
+  cursor: pointer;
+  transition: all 0.4s;
+  border-bottom: solid 1px var(--muted-color);
+}
+
+.root:hover {
+  background-color: var(--primary-color);
+  color: var(--primary-contrast-text-color);
+}

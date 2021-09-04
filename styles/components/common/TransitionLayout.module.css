@@ -1,0 +1,8 @@
+.root {
+  transform: translateX(-100vw);
+  transition: 0.6s;
+}
+
+.root--display {
+  transform: translateX(0);
+}

@@ -1,0 +1,27 @@
+@keyframes root-animation {
+  from {
+    transform: translateY(100vh);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.root {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 100vh;
+  overflow: auto;
+  background-color: var(--background-content-color);
+  padding: 1rem;
+  box-shadow: 0 -5px 20px -2px var(--muted-color);
+  animation: root-animation 0.3s ease-in-out;
+  z-index: 200;
+}
+
+.root__actions {
+  text-align: right;
+}

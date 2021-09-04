@@ -1,0 +1,61 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.root__chart {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+@media (max-width: 400px) {
+  .root__chart {
+    width: 100%;
+  }
+}
+
+.root__chart__line {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.root__chart__line__yaxis {
+  border-right: solid 2px var(--muted-color);
+}
+
+.root__chart__line__content {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.root__chart__line__content__bar {
+  height: 2rem;
+  background-color: var(--primary-light-color);
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.root__chart__line__content__bar--featured-true {
+  background-color: var(--primary-dark-color);
+}
+
+.root__chart__line__content__value {
+  margin-left: 0.5rem;
+  font-size: var(--text-md);
+}
+
+.root__chart__line__content__value--featured-true {
+  font-weight: bold;
+}
+
+.root__participants {
+  margin: 0.5rem;
+  font-size: var(--text-sm);
+}

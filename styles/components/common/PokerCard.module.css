@@ -1,18 +1,74 @@
-.card {
+.root {
   background-color: var(--primary-color);
   color: var(--primary-contrast-text-color);
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 5rem;
-  height: 7rem;
-  font-size: var(--text-xxl);
-  font-weight: bold;
+  width: 6rem;
+  height: 8rem;
+  margin: 0.5rem;
   border: solid 4px var(--primary-dark-color);
   border-radius: var(--border-radius);
-  margin: 0.5rem;
+  position: relative;
+  font-size: var(--text-xxl);
+  font-weight: bold;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  perspective: 600px;
+  transform: rotateY(0);
 }
 
-.card--status-inactive {
+.root--size-small {
+  width: 3rem;
+  height: 4rem;
+  font-size: var(--text-md);
+  border-width: 2px;
+}
+
+.root--status-active {
+  transform: rotateY(0);
+}
+
+.root--status-inactive {
   opacity: 0.5;
+  transform: scale(0.5) translateY(50%);
+}
+
+.root--status-reverse {
+  transform: rotateY(180deg);
+}
+
+.root--clickable-true {
+  cursor: pointer;
+}
+
+.root__front {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  backface-visibility: hidden;
+}
+
+.root__back {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    135deg
+    , var(--primary-light-color) 25%, transparent 25%) -10px 0,linear-gradient(
+    225deg
+    , var(--primary-light-color) 25%, transparent 25%) -10px 0,linear-gradient(
+    315deg
+    , var(--primary-light-color) 25%, transparent 25%),linear-gradient(
+    45deg
+    , var(--primary-light-color) 25%, transparent 25%);
+  background-size: calc(2 * 0.5rem) calc(2 * 0.5rem);
+  backface-visibility: hidden;
+  transform: rotateY( 180deg );
 }

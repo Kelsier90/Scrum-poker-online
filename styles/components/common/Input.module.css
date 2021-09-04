@@ -2,13 +2,14 @@
     padding: .4rem;
     font-size: var(--text-md);
     border: solid 1px transparent;
-    border-bottom: solid 1px var(--primary-color);
+    border-bottom: solid 1px var(--muted-color);
     max-width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .input:focus {
     border-color: var(--primary-color);
+    border-radius: var(--border-radius);
 }
 
 .input--size-lg {

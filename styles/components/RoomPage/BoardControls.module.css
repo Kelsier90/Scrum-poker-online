@@ -1,0 +1,9 @@
+.root {
+  background-color: var(--background-content-color);
+  padding: 1rem;
+  text-align: center;
+}
+
+.root__action {
+  margin: 0 0.5rem;
+}

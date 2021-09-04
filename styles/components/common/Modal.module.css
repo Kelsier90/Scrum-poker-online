@@ -18,7 +18,7 @@
     }
 }
 
-.modal {
+.root {
     background-color: var(--background-overlay-color);
     display: none;
     position: fixed;
@@ -26,17 +26,19 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 200;
+    width: 100vw;
+    height: 100vh;
 }
 
-.modal--status-active {
+.root--status-active {
     display: flex;
     align-items: center;
     justify-content: center;
     animation: modal-active 0.6s forwards;
 }
 
-.modal__dialog {
+.root__dialog {
     background-color: var(--background-content-color);
     box-shadow: 0 0 12px 3px rgba(0,0,0,0.3);
     max-width: 100%;
@@ -44,23 +46,26 @@
     border-radius: var(--border-radius);
 }
 
-.modal--status-active .modal__dialog {
+.root--status-active .root__dialog {
     animation: modal-dialog-active 0.3s ease-out forwards;
 }
 
-.modal__dialog__title {
+.root__dialog__title {
     font-size: var(--text-lg);
     margin-bottom: 1rem;
     text-align: left;
-    padding: 0 1rem;
+    padding: 0 3rem 0 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
-.modal__dialog__content {
+.root__dialog__content {
     display: block;
     padding: 1rem;
 }
 
-.modal__dialog__close {
+.root__dialog__close {
     position: absolute;
     top: 1rem;
     right: 1rem;

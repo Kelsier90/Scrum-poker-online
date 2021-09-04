@@ -1,0 +1,59 @@
+@keyframes box-animation {
+  0% {
+    transform: translateX(100vw);
+  }
+  80% {
+    transform: translateX(-2rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.root {
+  position: fixed;
+  bottom: 4rem;
+  right: 2rem;
+  display: flex;
+  max-width: 100%;
+  flex-direction: column;
+}
+
+.root__box {
+  background-color: var(--background-content-color);
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 0.5rem;
+  box-shadow: 0 0 18px 6px rgba(0,0,0,0.2);
+  max-width: 300px;
+  display: flex;
+  align-items: flex-start;
+  animation: box-animation 0.6s;
+}
+
+.root__box--severity-success {
+  background-color: var(--success-color);
+  color: var(--success-contrast-text-color)
+}
+
+.root__box--severity-alert {
+  background-color: var(--alert-color);
+  color: var(--alert-contrast-text-color)
+}
+
+.root__box--severity-info {
+  background-color: var(--info-color);
+  color: var(--info-contrast-text-color)
+}
+
+.root__box__text {
+  flex-grow: 1;
+  margin-right: 0.5rem;
+}
+
+.root__box__close {
+  cursor: pointer;
+  opacity: 0.7;
+  font-weight: bold;
+  user-select: none;
+}

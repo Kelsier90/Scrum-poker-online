@@ -1,21 +1,15 @@
-import styles from '../../styles/Room.module.css'
-
 import React from 'react'
-import useURLParams from '../../src/Utils/router/useURLParams'
-import Container from '../../src/components/common/Container'
-import HeaderContainer from '../../src/components/RoomPage/HeaderContainer'
-import BoardContainer from '../../src/components/RoomPage/BoardContainer'
+import RoomContainer from '@src/components/RoomPage/RoomContainer'
+import useURLParams from '@src/shared/router/useURLParams'
 
 const Room = () => {
-  const { id } = useURLParams()
+  const { id, askForName = 1 } = useURLParams()
 
   return (
-    <Container>
-      <HeaderContainer id={id as string} />
-      <main className={styles.main}>
-        <BoardContainer />
-      </main>
-    </Container>
+    <RoomContainer
+      id={id as string}
+      askForName={!!parseInt(askForName as string)}
+    />
   )
 }
 

@@ -1,6 +1,7 @@
 :root {
   --primary-color: #7d4e88;
   --primary-dark-color: #652e72;
+  --primary-light-color: #9d70a8;
   --secondary-color: #c1ca72;
   --secondary-dark-color: #9fa942;
   --muted-color: #969696;
@@ -9,19 +10,26 @@
   --background-overlay-color: #a2a2a2d9;
   --success-color: #309614;
   --success-dark-color: #1f7001;
+  --alert-color: #c65353;
+  --alert-dark-color: #982020;
+  --info-color: #53c6c4;
+  --info-dark-color: #208a98;
 
-
+  --background-contrast-text-color: #282828;
+  --background-content-contrast-text-color: #191919;
   --primary-contrast-text-color: #fff;
   --secondary-contrast-text-color: #000;
   --success-contrast-text-color: #fff;
+  --alert-contrast-text-color: #fff;
+  --info-contrast-text-color: #000;
   --subtitle-text-color: #515151;
 
-  --border-radius: 5px;
+  --border-radius: 8px;
 
   /* body font size */
   --text-base-size: 1em;
 
-    /* type scale */
+  /* type scale */
   --text-scale-ratio: 1.2;
   --text-xs: calc((1em / var(--text-scale-ratio)) / var(--text-scale-ratio));
   --text-sm: calc(var(--text-xs) * var(--text-scale-ratio));
@@ -29,6 +37,13 @@
   --text-lg: calc(var(--text-md) * var(--text-scale-ratio));
   --text-xl: calc(var(--text-lg) * var(--text-scale-ratio));
   --text-xxl: calc(var(--text-xl) * var(--text-scale-ratio));
+
+  /* Breakpoints */
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 960px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1920px;
 }
 
 @media (min-width: 64rem) { /* responsive decision applied to all text elements */
@@ -45,6 +60,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background-color: var(--background-color);
+  color: var(--background-contrast-text-color);
 }
 
 a {

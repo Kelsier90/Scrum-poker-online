@@ -1,7 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 
-import styles from '../../../styles/components/common/Input.module.css'
+import styles from '@styles/components/common/Input.module.css'
 
 interface InputProps {
   size?: 'lg' | 'md'
@@ -10,6 +10,7 @@ interface InputProps {
   defaultValue?: string
   value?: string
   required?: boolean
+  maxLength?: number
   autoFocus?: boolean
 }
 
@@ -24,5 +25,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     )
   }
 )
+
+Input.displayName = 'Input'
 
 export default Input

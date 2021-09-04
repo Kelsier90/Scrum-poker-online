@@ -1,0 +1,41 @@
+@keyframes text-animation {
+  from {
+    transform: translateX(-100vw) scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.root {
+  padding: 0.3rem 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.root__content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.root__content__text {
+  font-size: var(--text-md);
+  padding-right: 0.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.root__content__text--animated {
+  animation: text-animation 1s;
+}
+
+.root__content__text__issue {
+  font-size: var(--text-sm);
+}
+
+.root__content__text__issue--empty {
+  color: var(--muted-color)
+}

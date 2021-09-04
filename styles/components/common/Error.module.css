@@ -1,0 +1,16 @@
+.root {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.root__content {
+  display: block;
+  text-align: center;
+}
+
+.root__content__message {
+  font-size: var(--text-lg);
+  color: var(--alert-color);
+}

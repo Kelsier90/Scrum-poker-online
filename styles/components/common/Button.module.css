@@ -23,12 +23,12 @@
   font-size: var(--text-md);
   cursor: pointer;
   text-transform: uppercase;
-  position: relative;
   overflow: hidden;
   border: solid 1px transparent;
   max-width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   border-radius: var(--border-radius);
+  position: relative;
 }
 
 .button:focus::before {
@@ -43,9 +43,21 @@
   animation: button-focus 0.6s forwards;
 }
 
+.button--color-primary .button__content__icon svg {
+  color: var(--primary-contrast-text-color);
+  fill: var(--primary-contrast-text-color);
+  stroke: var(--primary-contrast-text-color);
+}
+
 .button--color-secondary {
   background-color: var(--secondary-color);
   color: var(--secondary-contrast-text-color);
+}
+
+.button--color-secondary .button__content__icon svg {
+  color: var(--secondary-contrast-text-color);
+  fill: var(--secondary-contrast-text-color);
+  stroke: var(--secondary-contrast-text-color);
 }
 
 .button--color-secondary:focus::before {
@@ -61,8 +73,23 @@
   color: var(--success-contrast-text-color);
 }
 
+.button--color-success .button__content__icon svg {
+  color: var(--success-contrast-text-color);
+  fill: var(--success-contrast-text-color);
+  stroke: var(--success-contrast-text-color);
+}
+
 .button--color-success:focus::before {
   background-color: var(--success-dark-color);
+}
+
+.button--color-transparent {
+  background-color: transparent;
+  color: inherit;
+}
+
+.button--color-transparent:focus::before {
+  background-color: transparent;
 }
 
 .button--size-sm {
@@ -75,10 +102,35 @@
   font-size: var(--text-lg);
 }
 
+.button--compact-true {
+  padding: 0.1rem;
+}
+
+.button--margin-false {
+  margin: 0;
+}
+
 .button__content {
-  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .button:hover .button__content {
   animation: button-hover 0.2s forwards;
+}
+
+.button__content__icon {
+  width: 1.5rem;
+  margin: 0 0.1rem;
+}
+
+.button__content__text {
+  position: relative;
+  flex-grow: 1;
+}
+
+@media (max-width: 600px) {
+  .button--hide-text-sm .button__content__text {
+    display: none;
+  }
 }

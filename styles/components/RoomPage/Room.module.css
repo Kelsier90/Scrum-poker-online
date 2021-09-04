@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.root__main {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin: 0 1rem;
+}
