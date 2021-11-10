@@ -4,7 +4,7 @@
     "paths": {
       "@styles/*": ["styles/*"],
       "@src/*": ["src/*"],
-      "@api/*": ["api/*"]
+      "@api/*": ["_api/*"]
     },
     "target": "es5",
     "lib": [

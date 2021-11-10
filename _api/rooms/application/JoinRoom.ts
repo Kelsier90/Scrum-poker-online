@@ -5,7 +5,7 @@ import RoomUserId from '../domain/RoomUserId'
 import RoomUserName from '../domain/RoomUserName'
 import EventBus from '@api/shared/domain/EventBus'
 import UserHasJoinedRoomEvent from '@api/rooms/domain/events/UserHasJoinedRoomEvent'
-import ResourceNotFoundError from "@api/shared/domain/errors/ResourceNotFoundError";
+import ResourceNotFoundError from '@api/shared/domain/errors/ResourceNotFoundError'
 
 export default class JoinRoom {
   private repository: RoomRepository
