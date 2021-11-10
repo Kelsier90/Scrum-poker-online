@@ -4,8 +4,8 @@ import React from 'react'
 import Button from '../../common/Button'
 import QRCodeSvg from '../../common/illustrations/QRCodeSvg'
 import useRedirect from '../../../shared/router/useRedirect'
-import { copyTextToClipBoard } from '../../../utils/clipboard'
-import { APP_BASE_URL } from '../../../utils/browserEnv'
+import { copyTextToClipBoard } from '@src/utils/clipboard'
+import { APP_BASE_URL } from '@src/utils/browserEnv'
 import useLeaveRoom from '../../../apiClient/useLeaveRoom'
 import Room from '../../../types/Room'
 import RoomQRModal from './RoomQRModal'
@@ -21,7 +21,7 @@ const HeaderContainer = ({ room }: HeaderContainerProps) => {
   const [urlWasCopied, setUrlWasCopied] = React.useState<boolean>(false)
   const [openQRModal, setOpenQRModal] = React.useState<boolean>(false)
   const timeoutRef = React.useRef<NodeJS.Timeout>()
-  const leaveRoom = useLeaveRoom()
+  const { execute: leaveRoom } = useLeaveRoom()
 
   const roomUrl = `${APP_BASE_URL}/rooms/${room.id}`
 
@@ -51,10 +51,15 @@ const HeaderContainer = ({ room }: HeaderContainerProps) => {
   }
 
   const handleClickExit = () => {
-    leaveRoom({
-      id: room.id
-    })
-    redirect('/')
+    leaveRoom(
+      {
+        roomId: room.id
+      },
+      {
+        onSuccess: () => redirect('/'),
+        onError: error => addNotification('error', error)
+      }
+    )
   }
 
   return (

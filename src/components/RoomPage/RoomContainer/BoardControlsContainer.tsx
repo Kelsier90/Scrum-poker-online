@@ -12,6 +12,7 @@ import ShowSvg from '@src/components/common/illustrations/ShowSvg'
 import CardsSvg from '@src/components/common/illustrations/CardsSvg'
 import ResetSvg from '@src/components/common/illustrations/ResetSvg'
 import StatsSvg from '@src/components/common/illustrations/StatsSvg'
+import FullScreenLoader from '@src/components/common/FullScreenLoader'
 
 interface BoardControlsProps {
   room: Room
@@ -21,9 +22,12 @@ const BoardControlsContainer = ({ room }: BoardControlsProps) => {
   const [openCardSelector, setOpenCardSelector] = React.useState<boolean>(false)
   const [openStatistics, setOpenStatistics] = React.useState<boolean>(false)
 
-  const revealCards = useRevelCards()
+  const { execute: revealCards, status: revealCardsStatus } = useRevelCards()
 
-  const resetRoom = useResetRoom()
+  const { execute: resetRoom, status: resetRoomStatus } = useResetRoom()
+
+  const isLoading =
+    revealCardsStatus === 'loading' || resetRoomStatus === 'loading'
 
   const handleSelectCard = () => {
     setOpenCardSelector(true)
@@ -112,6 +116,8 @@ const BoardControlsContainer = ({ room }: BoardControlsProps) => {
       {openStatistics && room.reveal && (
         <ResultsStatistics room={room} onClose={handleCloseStatistics} />
       )}
+
+      <FullScreenLoader active={isLoading} />
     </div>
   )
 }

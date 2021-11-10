@@ -10,6 +10,8 @@ import Input from '../../common/Input'
 import useSetRoomIssue from '../../../apiClient/useSetRoomIssue'
 import clsx from 'clsx'
 import useCurrentUserFromRoom from '../../../hooks/useCurrentUserFromRoom'
+import { useNotifications } from '@src/components/common/NotificationsProvider'
+import FullScreenLoader from '@src/components/common/FullScreenLoader'
 
 interface RoomIssueContainerProps {
   room: Room
@@ -21,7 +23,9 @@ const RoomIssueContainer = ({ room }: RoomIssueContainerProps) => {
 
   const currentUser = useCurrentUserFromRoom(room)
 
-  const setRoomIssue = useSetRoomIssue()
+  const { execute: setRoomIssue, status } = useSetRoomIssue()
+
+  const { addNotification } = useNotifications()
 
   React.useEffect(() => {
     let timeout
@@ -39,12 +43,16 @@ const RoomIssueContainer = ({ room }: RoomIssueContainerProps) => {
   }, [room.issue])
 
   const handleSubmitIssue = ({ issue }: { issue: string }) => {
-    setRoomIssue({
-      roomId: room.id,
-      issue
-    })
-
-    setOpenEditIssueModal(false)
+    setRoomIssue(
+      {
+        roomId: room.id,
+        issue
+      },
+      {
+        onSuccess: () => setOpenEditIssueModal(false),
+        onError: error => addNotification('error', error)
+      }
+    )
   }
 
   return (
@@ -99,6 +107,8 @@ const RoomIssueContainer = ({ room }: RoomIssueContainerProps) => {
           </Form>
         </Modal>
       )}
+
+      <FullScreenLoader active={status === 'loading'} />
     </>
   )
 }

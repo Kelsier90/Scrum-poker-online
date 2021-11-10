@@ -17,7 +17,7 @@ export default class LeaveRoom {
   async dispatch(command: LeaveRoomCommand): Promise<void> {
     const room = await this.repository.find(new Id(command.roomId))
 
-    if (!room || room.users.length === 1) return Promise.resolve()
+    if (!room) return Promise.resolve()
 
     const userId = new RoomUserId(command.userId)
     room.users = room.users.filter(

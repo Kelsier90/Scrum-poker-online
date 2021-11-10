@@ -1,40 +1,70 @@
-import { Server as ServerIO, Socket } from 'socket.io'
-import Container from '../../../shared/Container'
 import ClientEvent from '@src/shared/types/ClientEvent'
 import { responseOk } from '../../shared/response'
-import { composeSocketRoom } from '../utils/socketRoom'
+import { composeRoomChannel } from '@src/shared/rooms/utils/roomChannel'
+import Controller from '@api/app/shared/Controller'
+import { NextApiRequest, NextApiResponse } from 'next'
+import LeaveRoom from '@api/rooms/application/LeaveRoom'
+import GetUserFromRoom from '@api/rooms/application/GetUserFromRoom'
+import GetRoom from '@api/rooms/application/GetRoom'
+import MessageClient from '@api/shared/MessageClient'
 
-export default async (
-  io: ServerIO,
-  socket: Socket | null,
-  data: { id: string; userId: string }
-) => {
-  const getUserFromRoom = Container.getGetUserFromRoom()
+export default class LeaveRoomController extends Controller {
+  private leaveRoom: LeaveRoom
+  private getUserFromRoom: GetUserFromRoom
+  private getRoom: GetRoom
 
-  const userResponse = await getUserFromRoom.dispatch({
-    roomId: data.id,
-    userId: data.userId
-  })
+  constructor(
+    leaveRoom: LeaveRoom,
+    getUserFromRoom: GetUserFromRoom,
+    getRoom: GetRoom
+  ) {
+    super()
+    this.leaveRoom = leaveRoom
+    this.getUserFromRoom = getUserFromRoom
+    this.getRoom = getRoom
+  }
 
-  const leaveRoom = Container.getLeaveRoom()
+  protected async execute(
+    req: NextApiRequest,
+    res: NextApiResponse
+  ): Promise<void> {
+    const userId = this.getAuthUserId(req)
+    const { roomId } = req.body
 
-  await leaveRoom.dispatch({
-    roomId: data.id,
-    userId: data.userId
-  })
+    const userResponse = await this.getUserFromRoom.dispatch({
+      roomId,
+      userId
+    })
 
-  const socketRoom = composeSocketRoom(data.id)
+    await this.leaveRoom.dispatch({
+      roomId,
+      userId
+    })
 
-  if (socket) socket.leave(socketRoom)
+    const messages = []
 
-  if (userResponse)
-    io.to(socketRoom).emit(ClientEvent.USER_LEFT_ROOM, responseOk(userResponse))
+    const roomChannel = composeRoomChannel(roomId)
 
-  const getRoom = Container.getGetRoom()
+    if (userResponse)
+      messages.push({
+        channel: roomChannel,
+        name: ClientEvent.USER_LEFT_ROOM,
+        data: responseOk(userResponse)
+      })
 
-  const roomResponse = await getRoom.dispatch({
-    id: data.id
-  })
+    const roomResponse = await this.getRoom.dispatch({
+      id: roomId
+    })
 
-  io.to(socketRoom).emit(ClientEvent.UPDATED_ROOM, responseOk(roomResponse))
+    if (roomResponse)
+      messages.push({
+        channel: roomChannel,
+        name: ClientEvent.UPDATED_ROOM,
+        data: responseOk(roomResponse)
+      })
+
+    await MessageClient.sendMultiple(messages)
+
+    res.status(204).send(null)
+  }
 }

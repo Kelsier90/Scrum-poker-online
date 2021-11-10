@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import composeMongoModel from '@api/shared/infrastructure/composeMongoModel'
 
 export interface EventMongoDoc extends mongoose.Document {
   _id: string
@@ -16,6 +17,6 @@ const eventSchema = new mongoose.Schema({
   date: Date
 })
 
-const EventMongoModel = mongoose.model<EventMongoDoc>('Event', eventSchema)
+const EventMongoModel = composeMongoModel('Event', eventSchema)
 
 export default EventMongoModel

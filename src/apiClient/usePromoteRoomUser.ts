@@ -1,21 +1,17 @@
-import React from 'react'
-import { useSocketContext } from '../shared/socket/SocketContextProvider'
-import ServerEvent from '../shared/types/ServerEvent'
+import OperationStatus from '@src/apiClient/types/OperationStatus'
+import useApiClient from '@src/apiClient/core/useApiClient'
+import useRequest from '@src/apiClient/core/useRequest'
 
 interface PromoteRoomUserInput {
   roomId: string
   userId: string
 }
 
-export default function usePromoteRoomUser(): (
-  data: PromoteRoomUserInput
-) => void {
-  const socket = useSocketContext()
+export default function usePromoteRoomUser(): OperationStatus<
+  PromoteRoomUserInput,
+  void
+> {
+  const apiClient = useApiClient()
 
-  return React.useCallback(
-    data => {
-      socket.send(ServerEvent.PROMOTE_ROOM_USER, data)
-    },
-    [socket]
-  )
+  return useRequest(data => apiClient.put('promote-room-user', data))
 }

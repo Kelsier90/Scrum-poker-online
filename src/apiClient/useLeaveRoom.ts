@@ -1,18 +1,13 @@
-import React from 'react'
-import { useSocketContext } from '../shared/socket/SocketContextProvider'
-import ServerEvent from '../shared/types/ServerEvent'
+import OperationStatus from '@src/apiClient/types/OperationStatus'
+import useApiClient from '@src/apiClient/core/useApiClient'
+import useRequest from '@src/apiClient/core/useRequest'
 
 interface LeaveRoomInput {
-  id: string
+  roomId: string
 }
 
-export default function useLeaveRoom(): (data: LeaveRoomInput) => void {
-  const socket = useSocketContext()
+export default function useLeaveRoom(): OperationStatus<LeaveRoomInput, void> {
+  const apiClient = useApiClient()
 
-  return React.useCallback(
-    data => {
-      socket.send(ServerEvent.LEAVE_ROOM, data)
-    },
-    [socket]
-  )
+  return useRequest(data => apiClient.delete('leave-room', data))
 }

@@ -4,7 +4,7 @@ import RoomMother from '../domain/testUtils/RoomMother'
 import RoomUserId from '../domain/RoomUserId'
 import RoomUserName from '../domain/RoomUserName'
 import RoomRepositoryMock from './testUtils/RoomRepositoryMock'
-import EventBusMock from '@api/shared/application/testUtils/EventBusMock'
+import EventBusMock from '@api/shared/domain/testUtils/EventBusMock'
 import Id from '../../shared/domain/Id'
 
 const repositoryMock = new RoomRepositoryMock()
@@ -19,7 +19,7 @@ describe('JoinRoom', () => {
     const userId = RoomUserId.random().getValue()
     const userName = 'John'
     const command: JoinRoomCommand = {
-      id: room.id.getValue(),
+      roomId: room.id.getValue(),
       userId,
       userName
     }
@@ -46,7 +46,7 @@ describe('JoinRoom', () => {
     const userId = RoomUserId.random().getValue()
     const userName = 'John'
     const command: JoinRoomCommand = {
-      id: roomId.getValue(),
+      roomId: roomId.getValue(),
       userId,
       userName
     }

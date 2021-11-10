@@ -1,51 +1,64 @@
-import React from 'react'
-import SocketIOClient, { Socket } from 'socket.io-client'
-import { APP_BASE_URL } from '../../utils/browserEnv'
-import ServerEvent from '../types/ServerEvent'
 import ClientEvent from '../types/ClientEvent'
 import ApiResponse from '../../apiClient/types/ApiResponse'
+import Pusher, { Channel } from 'pusher-js'
+import { PUSHER_CLUSTER, PUSHER_KEY } from '@src/utils/browserEnv'
+
+export type SocketAbstractionState =
+  | 'connecting'
+  | 'connected'
+  | 'unavailable'
+  | 'not-supported'
+  | 'disconnected'
+
+interface SocketAbstractionOptions {
+  onConnectionChange?: (state: SocketAbstractionState) => void
+}
 
 export class SocketAbstraction {
-  private socket: Socket
+  private socket: Pusher
+  private subscribedChannels: Record<string, Channel> = {}
 
-  constructor(socket: Socket) {
-    this.socket = socket
+  constructor(pusher: Pusher, opts?: SocketAbstractionOptions) {
+    this.socket = pusher
+    if (opts?.onConnectionChange) {
+      this.socket.connection
+        .bind('connecting', () => opts.onConnectionChange('connecting'))
+        .bind('connected', () => opts.onConnectionChange('connected'))
+        .bind('unavailable', () => opts.onConnectionChange('unavailable'))
+        .bind('failed', () => opts.onConnectionChange('not-supported'))
+        .bind('disconnected', () => opts.onConnectionChange('disconnected'))
+    }
   }
 
-  getId(): Promise<string> {
-    return new Promise<string>(resolve => {
-      if (this.socket.id) resolve(this.socket.id)
-      this.socket.on('connect', () => {
-        resolve(this.socket.id)
-      })
-    })
+  getId(): string {
+    return this.socket.connection.socket_id
   }
 
   on<T = unknown>(
+    channelName: string,
     event: ClientEvent,
     callback: (data: ApiResponse<T>) => void
   ) {
-    this.socket.on(event, callback)
+    const channel = this.socket.subscribe(channelName)
+    this.subscribedChannels[channelName] = channel
+    channel.bind(event, callback)
   }
 
   off<T = unknown>(
+    channelName: string,
     event: ClientEvent,
     callback: (data: ApiResponse<T>) => void
   ) {
-    this.socket.off(event, callback)
-  }
-
-  send(event: ServerEvent, data: unknown) {
-    this.socket.emit(event, data)
+    const channel = this.subscribedChannels[channelName]
+    if (channel) channel.unbind(event, callback)
   }
 }
 
-export default function useNewSocket() {
-  const [socket] = React.useState(() =>
-    SocketIOClient(APP_BASE_URL, { path: '/api/socket' })
-  )
+const pusher = new Pusher(PUSHER_KEY, {
+  cluster: PUSHER_CLUSTER,
+  authEndpoint: '/api/auth-channel'
+})
 
-  React.useEffect((): (() => void) => () => socket.disconnect(), [socket])
-
-  return new SocketAbstraction(socket)
+export default function useNewSocket(opts?: SocketAbstractionOptions) {
+  return new SocketAbstraction(pusher, opts)
 }

@@ -1,6 +1,6 @@
 import Room from '../domain/Room'
 
-interface GetRoomResponseSerialized {
+export interface GetRoomResponseSerialized {
   id: string
   users: {
     id: string

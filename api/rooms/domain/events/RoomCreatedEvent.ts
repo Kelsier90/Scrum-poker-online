@@ -6,8 +6,10 @@ import RoomUserId from '@api/rooms/domain/RoomUserId'
 type RoomCreatedDataType = { userId: RoomUserId }
 
 export default class RoomCreatedEvent extends Event<RoomCreatedDataType, Id> {
+  static readonly NAME = 'RoomCreated'
+
   constructor(id: Id, roomId: Id, data: RoomCreatedDataType, date: Date) {
-    super(id, new EventName('RoomCreated'), roomId, data, date)
+    super(id, new EventName(RoomCreatedEvent.NAME), roomId, data, date)
   }
 
   static createNew(roomId: Id, data: RoomCreatedDataType): RoomCreatedEvent {

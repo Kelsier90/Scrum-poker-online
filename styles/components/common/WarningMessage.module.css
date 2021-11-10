@@ -1,0 +1,13 @@
+.root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5rem;
+  text-align: center;
+  background-color: var(--alert-color);
+  color: var(--alert-contrast-text-color);
+  font-size: var(--text-md);
+  font-weight: bold;
+  opacity: 0.9;
+}

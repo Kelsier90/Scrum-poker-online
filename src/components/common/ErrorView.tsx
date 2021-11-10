@@ -1,6 +1,6 @@
 import React from 'react'
 
-import styles from '@styles/components/common/Error.module.css'
+import styles from '@styles/components/common/ErrorView.module.css'
 import Button from './Button'
 import useRedirect from '../../shared/router/useRedirect'
 
@@ -9,7 +9,7 @@ interface ErrorProps {
   backUrl?: string
 }
 
-const Error = ({ message, backUrl }: ErrorProps) => {
+const ErrorView = ({ message, backUrl }: ErrorProps) => {
   const redirect = useRedirect()
 
   function handleClick() {
@@ -30,4 +30,4 @@ const Error = ({ message, backUrl }: ErrorProps) => {
   )
 }
 
-export default Error
+export default ErrorView

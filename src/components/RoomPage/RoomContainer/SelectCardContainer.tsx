@@ -6,6 +6,8 @@ import Room from '../../../types/Room'
 import useSelectCard from '../../../apiClient/useSelectCard'
 import Drawer from '../../common/Drawer'
 import cardValues from '../../../types/cardValues'
+import FullScreenLoader from '@src/components/common/FullScreenLoader'
+import { useNotifications } from '@src/components/common/NotificationsProvider'
 
 interface SelectCardContainerProps {
   room: Room
@@ -18,30 +20,41 @@ const SelectCardContainer = ({
   onClose,
   onCardSelected
 }: SelectCardContainerProps) => {
-  const selectCard = useSelectCard()
+  const { execute: selectCard, status } = useSelectCard()
+
+  const { addNotification } = useNotifications()
 
   const handleSelectCard = (card: string) => {
-    selectCard({
-      roomId: room.id,
-      card
-    })
-    onCardSelected(card)
+    selectCard(
+      {
+        roomId: room.id,
+        card
+      },
+      {
+        onSuccess: () => onCardSelected(card),
+        onError: error => addNotification('error', error)
+      }
+    )
   }
 
   const cards = cardValues()
 
   return (
-    <Drawer onClose={onClose}>
-      <div className={styles.root}>
-        {cards.map(card => (
-          <PokerCard
-            key={card}
-            value={card}
-            onClick={() => handleSelectCard(card)}
-          />
-        ))}
-      </div>
-    </Drawer>
+    <>
+      <Drawer onClose={onClose}>
+        <div className={styles.root}>
+          {cards.map(card => (
+            <PokerCard
+              key={card}
+              value={card}
+              onClick={() => handleSelectCard(card)}
+            />
+          ))}
+        </div>
+      </Drawer>
+
+      <FullScreenLoader active={status === 'loading'} />
+    </>
   )
 }
 

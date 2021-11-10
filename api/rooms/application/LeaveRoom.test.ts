@@ -1,6 +1,6 @@
 import RoomMother from '../domain/testUtils/RoomMother'
 import RoomRepositoryMock from './testUtils/RoomRepositoryMock'
-import EventBusMock from '@api/shared/application/testUtils/EventBusMock'
+import EventBusMock from '@api/shared/domain/testUtils/EventBusMock'
 import RoomUserMother from '../domain/testUtils/RoomUserMother'
 import LeaveRoomCommand from './LeaveRoomCommand'
 import LeaveRoom from './LeaveRoom'

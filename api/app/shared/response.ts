@@ -1,4 +1,4 @@
-export const responseOk = (data: any) => ({
+export const responseOk = (data: unknown) => ({
   ok: true,
   data
 })

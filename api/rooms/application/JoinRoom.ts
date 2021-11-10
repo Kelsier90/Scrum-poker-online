@@ -5,6 +5,7 @@ import RoomUserId from '../domain/RoomUserId'
 import RoomUserName from '../domain/RoomUserName'
 import EventBus from '@api/shared/domain/EventBus'
 import UserHasJoinedRoomEvent from '@api/rooms/domain/events/UserHasJoinedRoomEvent'
+import ResourceNotFoundError from "@api/shared/domain/errors/ResourceNotFoundError";
 
 export default class JoinRoom {
   private repository: RoomRepository
@@ -16,9 +17,9 @@ export default class JoinRoom {
   }
 
   async dispatch(command: JoinRoomCommand): Promise<void> {
-    const room = await this.repository.find(new Id(command.id))
+    const room = await this.repository.find(new Id(command.roomId))
 
-    if (!room) throw new Error('Room not found')
+    if (!room) throw new ResourceNotFoundError('Room not found')
 
     const userId = new RoomUserId(command.userId)
     // If the user is currently in the room there is nothing to do

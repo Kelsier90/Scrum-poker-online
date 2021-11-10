@@ -1,19 +1,17 @@
-import React from 'react'
-import { useSocketContext } from '../shared/socket/SocketContextProvider'
-import ServerEvent from '../shared/types/ServerEvent'
+import OperationStatus from '@src/apiClient/types/OperationStatus'
+import useApiClient from '@src/apiClient/core/useApiClient'
+import useRequest from '@src/apiClient/core/useRequest'
 
 interface KickRoomUserInput {
   roomId: string
   userId: string
 }
 
-export default function useKickRoomUser(): (data: KickRoomUserInput) => void {
-  const socket = useSocketContext()
+export default function useKickRoomUser(): OperationStatus<
+  KickRoomUserInput,
+  void
+> {
+  const apiClient = useApiClient()
 
-  return React.useCallback(
-    data => {
-      socket.send(ServerEvent.KICK_ROOM_USER, data)
-    },
-    [socket]
-  )
+  return useRequest(data => apiClient.delete('kick-room-user', data))
 }

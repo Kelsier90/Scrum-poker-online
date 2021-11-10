@@ -1,5 +1,5 @@
 export default interface JoinRoomCommand {
-  readonly id: string
+  readonly roomId: string
   readonly userId: string
   readonly userName: string
 }

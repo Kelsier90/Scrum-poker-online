@@ -4,12 +4,13 @@ import SetUserNameModal from '../common/SetUserNameModal'
 import useCreateRoom from '../../apiClient/useCreateRoom'
 import useRedirect from '../../shared/router/useRedirect'
 import { useNotifications } from '../common/NotificationsProvider'
+import FullScreenLoader from '@src/components/common/FullScreenLoader'
 
 const CreateRoomContainer = () => {
   const [openModal, setOpenModal] = React.useState<boolean>(false)
   const redirect = useRedirect()
 
-  const createRoom = useCreateRoom()
+  const { status, execute: createRoom } = useCreateRoom()
 
   const handleClick = () => {
     setOpenModal(true)
@@ -18,12 +19,17 @@ const CreateRoomContainer = () => {
   const { addNotification } = useNotifications()
 
   const handleSubmit = ({ user }: { user: string }) => {
-    createRoom({ userName: user }, data => {
-      redirect(`/rooms/${data.id}?askForName=0`)
-      addNotification('info', 'Room created')
-    })
-
-    setOpenModal(false)
+    createRoom(
+      { userName: user },
+      {
+        onSuccess: room => {
+          setOpenModal(false)
+          redirect(`/rooms/${room.id}?askForName=0`)
+          addNotification('info', 'Room created')
+        },
+        onError: errorMessage => addNotification('error', errorMessage)
+      }
+    )
   }
 
   return (
@@ -37,6 +43,8 @@ const CreateRoomContainer = () => {
         onClose={() => setOpenModal(false)}
         onSubmit={handleSubmit}
       />
+
+      <FullScreenLoader active={status === 'loading'} />
     </>
   )
 }

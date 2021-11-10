@@ -1,3 +1,5 @@
+import InvalidDataError from '@api/shared/domain/errors/InvalidDataError'
+
 export default class RoomUserCard {
   readonly values = [
     '0',
@@ -16,11 +18,11 @@ export default class RoomUserCard {
     'coffee'
   ]
 
-  private value: string
+  private readonly value: string
 
   constructor(value: string) {
     if (!this.values.includes(value))
-      throw new Error(`"${value}" is not a valid card value`)
+      throw new InvalidDataError(`"${value}" is not a valid card value`)
 
     this.value = value
   }

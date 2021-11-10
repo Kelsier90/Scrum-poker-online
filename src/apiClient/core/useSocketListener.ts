@@ -1,12 +1,14 @@
 import React from 'react'
 import ClientEvent from '../../shared/types/ClientEvent'
 import ApiResponse from '../types/ApiResponse'
-import { useSocketContext } from '../../shared/socket/SocketContextProvider'
+import { useSocketContext } from '@src/shared/socket/SocketContextProvider'
 
 export default function useSocketListener(
+  channel: string,
   event: ClientEvent,
   callback,
-  isError = false
+  isError = false,
+  listen = true
 ) {
   const socket = useSocketContext()
 
@@ -14,8 +16,15 @@ export default function useSocketListener(
     const listener = (data: ApiResponse<unknown>) => {
       callback(isError ? data.message : data.data)
     }
-    socket.on(event, listener)
 
-    return () => socket.off(event, listener)
-  }, [callback, event, isError, socket])
+    if (listen) {
+      socket.on(channel, event, listener)
+    } else {
+      socket.off(channel, event, listener)
+    }
+
+    return () => {
+      if (listen) socket.off(channel, event, listener)
+    }
+  }, [listen, callback, channel, event, isError, socket])
 }

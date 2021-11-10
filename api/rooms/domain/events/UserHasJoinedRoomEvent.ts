@@ -9,13 +9,15 @@ export default class UserHasJoinedRoomEvent extends Event<
   UserHasJoinedRoomEventData,
   Id
 > {
+  static readonly NAME = 'UserHasJoinedRoom'
+
   constructor(
     id: Id,
     roomId: Id,
     data: UserHasJoinedRoomEventData,
     date: Date
   ) {
-    super(id, new EventName('UserHasJoinedRoom'), roomId, data, date)
+    super(id, new EventName(UserHasJoinedRoomEvent.NAME), roomId, data, date)
   }
 
   static createNew(

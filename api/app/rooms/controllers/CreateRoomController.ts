@@ -1,37 +1,37 @@
-import { Server as ServerIO, Socket } from 'socket.io'
-import Container from '../../../shared/Container'
-import ClientEvent from '@src/shared/types/ClientEvent'
 import newId from '../../shared/newId'
-import { responseKo, responseOk } from '../../shared/response'
-import { composeSocketRoom } from '../utils/socketRoom'
+import Controller from '@api/app/shared/Controller'
+import { NextApiRequest, NextApiResponse } from 'next'
+import CreateRoom from '@api/rooms/application/CreateRoom'
+import GetRoom from '@api/rooms/application/GetRoom'
 
-export default async (
-  io: ServerIO,
-  socket: Socket,
-  data: { userName: string }
-) => {
-  try {
-    const createRoom = Container.getCreateRoom()
+export default class CreateRoomController extends Controller {
+  private createRoom: CreateRoom
+  private getRoom: GetRoom
 
+  constructor(createRoom: CreateRoom, getRoom: GetRoom) {
+    super()
+    this.createRoom = createRoom
+    this.getRoom = getRoom
+  }
+
+  protected async execute(
+    req: NextApiRequest,
+    res: NextApiResponse
+  ): Promise<void> {
     const id = newId()
-    await createRoom.dispatch({
+    const userId = this.getAuthUserId(req)
+    const { userName } = req.body
+
+    await this.createRoom.dispatch({
       id,
-      userId: socket.id,
-      userName: data.userName
+      userId,
+      userName
     })
 
-    const socketRoom = composeSocketRoom(id)
-    socket.join(socketRoom)
-
-    const getRoom = Container.getGetRoom()
-
-    const roomResponse = await getRoom.dispatch({
+    const response = await this.getRoom.dispatch({
       id
     })
 
-    socket.emit(ClientEvent.JOINED_TO_ROOM, responseOk(roomResponse))
-    io.to(socketRoom).emit(ClientEvent.UPDATED_ROOM, responseOk(roomResponse))
-  } catch (e) {
-    socket.emit(ClientEvent.JOINED_TO_ROOM, responseKo(e))
+    res.status(201).json(response)
   }
 }

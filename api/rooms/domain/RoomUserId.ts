@@ -1,10 +1,11 @@
+import InvalidDataError from '@api/shared/domain/errors/InvalidDataError'
+
 export default class RoomUserId {
-  private value: string
-  private static readonly LENGTH = 20
+  private readonly value: string
 
   constructor(value: string) {
-    if (value.replace(' ', '').length !== RoomUserId.LENGTH)
-      throw new Error(`${value} is not a valid user ID`)
+    if (value.trim().length === 0)
+      throw new InvalidDataError('The user id cannot be empty')
 
     this.value = value
   }
@@ -18,7 +19,7 @@ export default class RoomUserId {
     const characters =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     const charactersLength = characters.length
-    for (let i = 0; i < this.LENGTH; i++) {
+    for (let i = 0; i < 20; i++) {
       id += characters.charAt(Math.floor(Math.random() * charactersLength))
     }
 

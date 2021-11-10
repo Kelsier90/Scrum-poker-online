@@ -1,43 +1,64 @@
-import { Server as ServerIO, Socket } from 'socket.io'
-import Container from '../../../shared/Container'
 import ClientEvent from '@src/shared/types/ClientEvent'
-import { responseKo, responseOk } from '../../shared/response'
-import { composeSocketRoom } from '../utils/socketRoom'
+import { responseOk } from '../../shared/response'
+import { composeRoomChannel } from '@src/shared/rooms/utils/roomChannel'
+import Controller from '@api/app/shared/Controller'
+import JoinRoom from '@api/rooms/application/JoinRoom'
+import GetRoom from '@api/rooms/application/GetRoom'
+import { NextApiRequest, NextApiResponse } from 'next'
+import GetUserFromRoom from '@api/rooms/application/GetUserFromRoom'
+import MessageClient from '@api/shared/MessageClient'
 
-export default async (io: ServerIO, socket: Socket, data) => {
-  try {
-    const joinRoom = Container.getJoinRoom()
+export default class JoinRoomController extends Controller {
+  private joinRoom: JoinRoom
+  private getRoom: GetRoom
+  private getUserFromRoom: GetUserFromRoom
 
-    await joinRoom.dispatch({
-      id: data.id,
-      userId: socket.id,
-      userName: data.userName
+  constructor(
+    joinRoom: JoinRoom,
+    getRoom: GetRoom,
+    getUserFromRoom: GetUserFromRoom
+  ) {
+    super()
+    this.getUserFromRoom = getUserFromRoom
+    this.joinRoom = joinRoom
+    this.getRoom = getRoom
+  }
+
+  protected async execute(
+    req: NextApiRequest,
+    res: NextApiResponse
+  ): Promise<void> {
+    const userId = this.getAuthUserId(req)
+    const { roomId, userName } = req.body
+
+    await this.joinRoom.dispatch({
+      roomId,
+      userId,
+      userName
     })
 
-    const socketRoom = composeSocketRoom(data.id)
-    socket.join(socketRoom)
+    const roomChannel = composeRoomChannel(roomId)
 
-    const getRoom = Container.getGetRoom()
-
-    const roomResponse = await getRoom.dispatch({
-      id: data.id
+    const userResponse = await this.getUserFromRoom.dispatch({
+      roomId,
+      userId
     })
 
-    socket.emit(ClientEvent.JOINED_TO_ROOM, responseOk(roomResponse))
+    const roomResponse = await this.getRoom.dispatch({ id: roomId })
 
-    const getUserFromRoom = Container.getGetUserFromRoom()
+    await MessageClient.sendMultiple([
+      {
+        channel: roomChannel,
+        name: ClientEvent.USER_JOINED_TO_ROOM,
+        data: responseOk(userResponse)
+      },
+      {
+        channel: roomChannel,
+        name: ClientEvent.UPDATED_ROOM,
+        data: responseOk(roomResponse)
+      }
+    ])
 
-    const userResponse = await getUserFromRoom.dispatch({
-      roomId: data.id,
-      userId: socket.id
-    })
-
-    io.to(socketRoom).emit(
-      ClientEvent.USER_JOINED_TO_ROOM,
-      responseOk(userResponse)
-    )
-    io.to(socketRoom).emit(ClientEvent.UPDATED_ROOM, responseOk(roomResponse))
-  } catch (e) {
-    socket.emit(ClientEvent.JOINED_TO_ROOM, responseKo(e))
+    res.status(200).json(roomResponse)
   }
 }

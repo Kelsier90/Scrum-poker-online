@@ -1,21 +1,14 @@
-import React from 'react'
-import { useSocketContext } from '../shared/socket/SocketContextProvider'
-import ServerEvent from '../shared/types/ServerEvent'
+import useApiClient from '@src/apiClient/core/useApiClient'
+import useRequest from '@src/apiClient/core/useRequest'
+import OperationStatus from '@src/apiClient/types/OperationStatus'
 
 interface DemoteRoomUserInput {
   roomId: string
   userId: string
 }
 
-export default function useDemoteRoomUser(): (
-  data: DemoteRoomUserInput
-) => void {
-  const socket = useSocketContext()
+export default function useDemoteRoomUser(): OperationStatus<DemoteRoomUserInput> {
+  const apiClient = useApiClient()
 
-  return React.useCallback(
-    data => {
-      socket.send(ServerEvent.DEMOTE_ROOM_USER, data)
-    },
-    [socket]
-  )
+  return useRequest(data => apiClient.put('demote-room-user', data))
 }

@@ -6,26 +6,31 @@ import BoardSlot from './BoardSlot'
 import usePromoteRoomUser from '@src/apiClient/usePromoteRoomUser'
 import useDemoteRoomUser from '@src/apiClient/useDemoteRoomUser'
 import useKickRoomUser from '@src/apiClient/useKickRoomUser'
+import { useNotifications } from '@src/components/common/NotificationsProvider'
 
 interface BoardContainerProps {
   room: Room
 }
 
 const BoardContainer = ({ room }: BoardContainerProps) => {
-  const promoteUser = usePromoteRoomUser()
-  const demoteUser = useDemoteRoomUser()
-  const kickUser = useKickRoomUser()
+  const { execute: PromoteRoomUser } = usePromoteRoomUser()
+  const { execute: demoteRoomUser } = useDemoteRoomUser()
+  const { execute: kickRoomUser } = useKickRoomUser()
+
+  const { addNotification } = useNotifications()
+
+  const notifyError = (error: string) => addNotification('error', error)
 
   const handlePromoteUser = userId => {
-    promoteUser({ roomId: room.id, userId })
+    PromoteRoomUser({ roomId: room.id, userId }, { onError: notifyError })
   }
 
   const handleDemoteUser = userId => {
-    demoteUser({ roomId: room.id, userId })
+    demoteRoomUser({ roomId: room.id, userId }, { onError: notifyError })
   }
 
   const handleKickUser = userId => {
-    kickUser({ roomId: room.id, userId })
+    kickRoomUser({ roomId: room.id, userId }, { onError: notifyError })
   }
 
   return (

@@ -1,6 +1,6 @@
-import RoomUser from '../domain/RoomUser'
+import RoomUser from '@api/rooms/domain/RoomUser'
 
-interface GetUserFromRoomResponseSerialized {
+export interface GetUserFromRoomResponseSerialized {
   id: string
   name: string
   isMaster: boolean

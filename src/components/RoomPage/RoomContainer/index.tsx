@@ -3,21 +3,20 @@ import styles from '@styles/components/RoomPage/Room.module.css'
 import React from 'react'
 import HeaderContainer from './HeaderContainer'
 import BoardContainer from './BoardContainer'
-import Room from '@src/types/Room'
 import useJoinRoom from '../../../apiClient/useJoinRoom'
 import Loader from '../../common/Loader'
-import Error from '../../common/Error'
+import ErrorView from '../../common/ErrorView'
 import SetUserNameModal from '../../common/SetUserNameModal'
 import useOnUpdateRoom from '../../../apiClient/useOnUpdateRoom'
 import RoomIssueContainer from './RoomIssueContainer'
 import BoardControlsContainer from './BoardControlsContainer'
 import useUser from '../../../shared/user/useUser'
 import { useNotifications } from '../../common/NotificationsProvider'
-import useOnError from '@src/apiClient/useOnError'
 import useOnUserJoinedToRoom from '@src/apiClient/useOnUserJoinedToRoom'
 import useOnUserLeftRoom from '@src/apiClient/useOnUserLeftRoom'
 import useOnUserKickedFromRoom from '@src/apiClient/useOnUserKickedFromRoom'
 import useRedirect from '@src/shared/router/useRedirect'
+import Room from '@src/types/Room'
 
 const RoomContainer = ({
   id,
@@ -30,67 +29,63 @@ const RoomContainer = ({
 
   const redirect = useRedirect()
 
-  const [status, setStatus] = React.useState<
-    'loading' | 'error' | 'success' | 'setName'
-  >(askForName || !name ? 'setName' : 'loading')
-
   const [wasNameSubmitted, setWasNameSubmitted] = React.useState<boolean>(
     !askForName && name != null
   )
 
-  const [error, setError] = React.useState<string>(null)
-
   const [room, setRoom] = React.useState<Room>(null)
 
-  const joinRoom = useJoinRoom()
+  const { status, error, execute: joinRoom } = useJoinRoom()
 
   const { addNotification } = useNotifications()
 
-  useOnUserJoinedToRoom(({ name }) =>
-    addNotification('info', `${name} has joined to the room`)
+  useOnUserJoinedToRoom(
+    room?.id,
+    ({ name }) => addNotification('info', `${name} has joined to the room`),
+    !!room?.id
   )
 
-  useOnUserLeftRoom(({ name, isMaster }) =>
-    addNotification(
-      'info',
-      `${name} ${isMaster ? '(master)' : ''} has left the room`
-    )
-  )
-
-  useOnUserKickedFromRoom(({ id, name, isMaster }) => {
-    if (id === currentUserId) {
-      redirect('/')
-      addNotification('info', `You have been kicked out from the room`)
-    } else {
+  useOnUserLeftRoom(
+    room?.id,
+    ({ name, isMaster }) =>
       addNotification(
         'info',
-        `${name} ${
-          isMaster ? '(master)' : ''
-        } has been kicked out from the room`
-      )
-    }
-  })
+        `${name} ${isMaster ? '(master)' : ''} has left the room`
+      ),
+    !!room?.id
+  )
 
-  useOnError(message => addNotification('error', message))
+  useOnUserKickedFromRoom(
+    room?.id,
+    ({ id, name, isMaster }) => {
+      if (id === currentUserId) {
+        redirect('/')
+        addNotification('info', `You have been kicked out from the room`)
+      } else {
+        addNotification(
+          'info',
+          `${name} ${
+            isMaster ? '(master)' : ''
+          } has been kicked out from the room`
+        )
+      }
+    },
+    !!room?.id
+  )
 
-  useOnUpdateRoom(room => setRoom(room))
+  useOnUpdateRoom(room?.id, room => setRoom(room), !!room?.id)
 
   React.useEffect(() => {
-    if (wasNameSubmitted && name != null) {
+    if (wasNameSubmitted && name != null && !!id) {
       joinRoom(
         {
-          id,
+          roomId: id,
           userName: name
         },
-        data => {
-          setRoom(data)
-          setError(null)
-          setStatus('success')
-        },
-        e => {
-          setRoom(null)
-          setError(e)
-          setStatus('error')
+        {
+          onSuccess: data => {
+            setRoom(data)
+          }
         }
       )
     }
@@ -100,12 +95,17 @@ const RoomContainer = ({
     setWasNameSubmitted(true)
   }
 
-  if (status === 'setName')
+  if (status === 'idle' || !wasNameSubmitted)
     return <SetUserNameModal onSubmit={handleSubmitName} open />
 
-  if (status === 'loading') return <Loader />
+  if (status === 'loading')
+    return (
+      <div className={styles.root}>
+        <Loader />
+      </div>
+    )
 
-  if (status === 'error') return <Error message={error} backUrl="/" />
+  if (status === 'error') return <ErrorView message={error} backUrl="/" />
 
   if (!room) return null
 

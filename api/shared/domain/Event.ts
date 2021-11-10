@@ -4,6 +4,7 @@ import EventName from '@api/shared/domain/EventName'
 export default abstract class Event<Data = unknown, AggregateId = unknown> {
   readonly id: Id
   readonly name: EventName
+  static readonly NAME: string
   readonly aggregateId: AggregateId
   readonly data: Data
   readonly date: Date

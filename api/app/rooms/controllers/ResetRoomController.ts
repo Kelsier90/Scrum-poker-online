@@ -1,26 +1,46 @@
-import { Server as ServerIO, Socket } from 'socket.io'
-import Container from '../../../shared/Container'
-import { composeSocketRoom } from '../utils/socketRoom'
+import { composeRoomChannel } from '@src/shared/rooms/utils/roomChannel'
 import ClientEvent from '@src/shared/types/ClientEvent'
 import { responseOk } from '../../shared/response'
+import Controller from '@api/app/shared/Controller'
+import ResetRoom from '@api/rooms/application/ResetRoom'
+import GetRoom from '@api/rooms/application/GetRoom'
+import { NextApiRequest, NextApiResponse } from 'next'
+import MessageClient from '@api/shared/MessageClient'
+import userIsMasterInRoom from '@api/app/rooms/middlewares/userIsMasterInRoom'
 
-export default async (
-  io: ServerIO,
-  socket: Socket,
-  data: { roomId: string }
-) => {
-  const resetRoom = Container.getResetRoom()
+export default class ResetRoomController extends Controller {
+  private resetRoom: ResetRoom
+  private getRoom: GetRoom
 
-  await resetRoom.dispatch({
-    roomId: data.roomId
-  })
+  constructor(resetRoom: ResetRoom, getRoom: GetRoom) {
+    super()
+    this.resetRoom = resetRoom
+    this.getRoom = getRoom
+  }
 
-  const getRoom = Container.getGetRoom()
+  protected async execute(
+    req: NextApiRequest,
+    res: NextApiResponse
+  ): Promise<void> {
+    const userId = this.getAuthUserId(req)
+    const { roomId } = req.body
 
-  const roomResponse = await getRoom.dispatch({
-    id: data.roomId
-  })
+    await this.runMiddleware(req, res, userIsMasterInRoom(userId, roomId))
 
-  const socketRoom = composeSocketRoom(data.roomId)
-  io.to(socketRoom).emit(ClientEvent.UPDATED_ROOM, responseOk(roomResponse))
+    await this.resetRoom.dispatch({
+      roomId
+    })
+
+    const roomResponse = await this.getRoom.dispatch({
+      id: roomId
+    })
+
+    const roomChannel = composeRoomChannel(roomId)
+    await MessageClient.send(roomChannel, {
+      name: ClientEvent.UPDATED_ROOM,
+      data: responseOk(roomResponse)
+    })
+
+    res.status(204).send(null)
+  }
 }

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import composeMongoModel from '@api/shared/infrastructure/composeMongoModel'
 
 export interface RoomMongoDoc extends mongoose.Document {
   _id: string
@@ -28,6 +29,6 @@ const roomSchema = new mongoose.Schema({
   issue: String
 })
 
-const RoomMongoModel = mongoose.model<RoomMongoDoc>('Room', roomSchema)
+const RoomMongoModel = composeMongoModel('Room', roomSchema)
 
 export default RoomMongoModel

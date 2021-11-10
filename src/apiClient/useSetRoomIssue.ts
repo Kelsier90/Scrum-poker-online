@@ -1,19 +1,14 @@
-import React from 'react'
-import { useSocketContext } from '../shared/socket/SocketContextProvider'
-import ServerEvent from '../shared/types/ServerEvent'
+import OperationStatus from '@src/apiClient/types/OperationStatus'
+import useApiClient from '@src/apiClient/core/useApiClient'
+import useRequest from '@src/apiClient/core/useRequest'
 
-interface SelectCardInput {
+interface SetRoomIssueInput {
   roomId: string
   issue: string
 }
 
-export default function useSetRoomIssue(): (data: SelectCardInput) => void {
-  const socket = useSocketContext()
+export default function useSetRoomIssue(): OperationStatus<SetRoomIssueInput> {
+  const apiClient = useApiClient()
 
-  return React.useCallback(
-    data => {
-      socket.send(ServerEvent.SET_ROOM_ISSUE, data)
-    },
-    [socket]
-  )
+  return useRequest(data => apiClient.put('set-room-issue', data))
 }

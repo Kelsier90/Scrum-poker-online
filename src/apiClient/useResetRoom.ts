@@ -1,18 +1,13 @@
-import React from 'react'
-import { useSocketContext } from '../shared/socket/SocketContextProvider'
-import ServerEvent from '../shared/types/ServerEvent'
+import OperationStatus from '@src/apiClient/types/OperationStatus'
+import useApiClient from '@src/apiClient/core/useApiClient'
+import useRequest from '@src/apiClient/core/useRequest'
 
 interface ResetRoomInput {
   roomId: string
 }
 
-export default function useResetRoom(): (data: ResetRoomInput) => void {
-  const socket = useSocketContext()
+export default function useResetRoom(): OperationStatus<ResetRoomInput, void> {
+  const apiClient = useApiClient()
 
-  return React.useCallback(
-    data => {
-      socket.send(ServerEvent.RESET_ROOM, data)
-    },
-    [socket]
-  )
+  return useRequest(data => apiClient.put('reset-room', data))
 }

@@ -1,11 +1,14 @@
-import Middleware from '../../shared/middlewares'
 import Container from '../../../shared/Container'
-import ClientEvent from '@src/shared/types/ClientEvent'
-import { responseKo } from '../../shared/response'
+import { NextApiRequest, NextApiResponse } from 'next'
+import PermissionDeniedError from '@api/shared/domain/errors/PermissionDeniedError'
 
 const userIsMasterInRoom =
-  (userId: string, roomId: string): Middleware =>
-  async socket => {
+  (userId: string, roomId: string) =>
+  async (
+    req: NextApiRequest,
+    res: NextApiResponse,
+    next: (result: unknown) => void
+  ) => {
     const isMasterUserInRoom = Container.getIsMasterUserInRoom()
 
     const exists = await isMasterUserInRoom.dispatch({
@@ -14,12 +17,9 @@ const userIsMasterInRoom =
     })
 
     if (!exists)
-      socket.emit(
-        ClientEvent.ERROR,
-        responseKo(new Error('The user is not the master in the room'))
-      )
+      next(new PermissionDeniedError('The user is not the room master'))
 
-    return exists
+    next(null)
   }
 
 export default userIsMasterInRoom

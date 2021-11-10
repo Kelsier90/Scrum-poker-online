@@ -6,7 +6,7 @@ interface NotificationsContextValue {
   addNotification: (
     severity: 'info' | 'success' | 'error',
     text: string
-  ) => void
+  ) => number
   removeNotification: (id: number) => void
 }
 
@@ -27,32 +27,44 @@ const NotificationsProvider = ({ children }: { children: unknown }) => {
     }
   }, [])
 
-  const removeNotification = id =>
-    setNotifications(currentNotifications =>
-      [...currentNotifications].filter(n => n.id !== id)
-    )
+  const removeNotification = React.useCallback(
+    id =>
+      setNotifications(currentNotifications =>
+        [...currentNotifications].filter(n => n.id !== id)
+      ),
+    []
+  )
+
+  const addNotification = React.useCallback(
+    (severity, text, fixed = false): number => {
+      const id = Date.now()
+      setNotifications(currentNotifications => [
+        ...currentNotifications,
+        {
+          id,
+          severity,
+          text
+        }
+      ])
+
+      if (!fixed) {
+        timeoutsRef.current.push(
+          setTimeout(() => {
+            removeNotification(id)
+          }, 5000)
+        )
+      }
+
+      return id
+    },
+    [removeNotification]
+  )
 
   return (
     <NotificationsContext.Provider
       value={{
         notifications,
-        addNotification: (severity, text) => {
-          const id = Date.now()
-          setNotifications(currentNotifications => [
-            ...currentNotifications,
-            {
-              id,
-              severity,
-              text
-            }
-          ])
-
-          timeoutsRef.current.push(
-            setTimeout(() => {
-              removeNotification(id)
-            }, 5000)
-          )
-        },
+        addNotification,
         removeNotification
       }}
     >

@@ -1,18 +1,16 @@
-import React from 'react'
-import { useSocketContext } from '../shared/socket/SocketContextProvider'
-import ServerEvent from '../shared/types/ServerEvent'
+import OperationStatus from '@src/apiClient/types/OperationStatus'
+import useApiClient from '@src/apiClient/core/useApiClient'
+import useRequest from '@src/apiClient/core/useRequest'
 
 interface RevealCardsInput {
   roomId: string
 }
 
-export default function useRevelCards(): (data: RevealCardsInput) => void {
-  const socket = useSocketContext()
+export default function useRevelCards(): OperationStatus<
+  RevealCardsInput,
+  void
+> {
+  const apiClient = useApiClient()
 
-  return React.useCallback(
-    data => {
-      socket.send(ServerEvent.REVEAL_CARDS, data)
-    },
-    [socket]
-  )
+  return useRequest(data => apiClient.put('reveal-cards', data))
 }
