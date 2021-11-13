@@ -5,7 +5,6 @@ import Button from '../../common/Button'
 import QRCodeSvg from '../../common/illustrations/QRCodeSvg'
 import useRedirect from '../../../shared/router/useRedirect'
 import { copyTextToClipBoard } from '@src/utils/clipboard'
-import { APP_BASE_URL } from '@src/utils/browserEnv'
 import useLeaveRoom from '../../../apiClient/useLeaveRoom'
 import Room from '../../../types/Room'
 import RoomQRModal from './RoomQRModal'
@@ -23,7 +22,7 @@ const HeaderContainer = ({ room }: HeaderContainerProps) => {
   const timeoutRef = React.useRef<NodeJS.Timeout>()
   const { execute: leaveRoom } = useLeaveRoom()
 
-  const roomUrl = `${APP_BASE_URL}/rooms/${room.id}`
+  const roomUrl = `${location.host}/rooms/${room.id}`
 
   React.useEffect(() => {
     return () => {
