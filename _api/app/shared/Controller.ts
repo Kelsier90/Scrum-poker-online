@@ -16,7 +16,7 @@ export default abstract class Controller {
       await this.execute(req, res)
     } catch (e) {
       if (e instanceof TypeError) {
-        res.status(400).json({ status: 'error', message: e.stack })
+        res.status(400).json({ status: 'error', message: 'Bad request' })
       } else if (e instanceof InvalidDataError) {
         res.status(400).json({ status: 'error', message: e.message })
       } else if (e instanceof PermissionDeniedError) {
