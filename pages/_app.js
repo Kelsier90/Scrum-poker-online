@@ -12,7 +12,10 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <title>Scrum Poker Online</title>
-        <meta name="description" content="Live scrum poker rooms" />
+        <meta
+          name="description"
+          content="Live scrum poker rooms. Scrum poker is an open source web application of online planning poker for scrum teams. Create a room and start planning!"
+        />
         <link rel="icon" href="/favicon.png" />
       </Head>
       <SocketContextProvider>
