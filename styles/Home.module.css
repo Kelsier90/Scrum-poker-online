@@ -1,6 +1,23 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 2rem;
+}
+
 .main {
+    flex-grow: 1;
     text-align: center;
     max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .description {

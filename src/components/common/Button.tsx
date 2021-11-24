@@ -13,6 +13,8 @@ interface ButtonProps {
   className?: string
   applyMargin?: boolean
   startIcon?: unknown
+  href?: string
+  component?: string
 }
 
 const Button = ({
@@ -24,12 +26,14 @@ const Button = ({
   className,
   applyMargin = true,
   startIcon,
+  component = 'button',
   ...rest
-}: ButtonProps) => {
-  return (
-    <button
-      type={type}
-      className={clsx(
+}: ButtonProps) =>
+  React.createElement(
+    component,
+    {
+      type: component === 'button' ? type : undefined,
+      className: clsx(
         styles.button,
         styles[`button--size-${size}`],
         styles[`button--color-${color}`],
@@ -37,17 +41,15 @@ const Button = ({
         { [styles['button--margin-false']]: !applyMargin },
         { [styles['button--hide-text-sm']]: !!startIcon },
         className
+      ),
+      ...rest
+    },
+    <div className={styles.button__content}>
+      {startIcon && (
+        <div className={styles.button__content__icon}>{startIcon}</div>
       )}
-      {...rest}
-    >
-      <div className={styles.button__content}>
-        {startIcon && (
-          <div className={styles.button__content__icon}>{startIcon}</div>
-        )}
-        <div className={styles.button__content__text}>{children}</div>
-      </div>
-    </button>
+      <div className={styles.button__content__text}>{children}</div>
+    </div>
   )
-}
 
 export default Button
