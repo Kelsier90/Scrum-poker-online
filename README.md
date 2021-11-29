@@ -4,7 +4,7 @@
 
 Live scrum poker rooms.
 
-Scrum poker is an open source web application of online planning poker for scrum teams.
+Scrum poker is an open source web application for online planning poker for teams.
 
 **Create a room and start planning!**
 
