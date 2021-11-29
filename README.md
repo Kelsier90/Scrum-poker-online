@@ -15,10 +15,10 @@ https://scrum-poker.online
 ## Features
 
 - No registration required
-- Live rooms.
+- Live rooms
 - Invite users by sharing a room link or by QR code
 - As a master of the room you can reveal the cards when you want
-- Can promote, demote, and kick users
+- The users can be promoted, demoted, and kicked out
 - Responsive
 - Free
 - Open source
