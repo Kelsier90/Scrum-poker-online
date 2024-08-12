@@ -11,6 +11,13 @@
   padding: 2rem;
 }
 
+.header__icon {
+  width: 32px;
+  height: 32px;
+  color: var(--background-contrast-text-color);
+  fill: var(--background-contrast-text-color);
+}
+
 .main {
     flex-grow: 1;
     text-align: center;

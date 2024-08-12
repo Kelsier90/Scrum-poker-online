@@ -1,0 +1,31 @@
+.root {
+  position: relative;
+}
+
+.menu, .toggle {
+  background-color: var(--background-content-color);
+  color: var(--background-content-contrast-text-color);
+  border-radius: var(--border-radius);
+  margin: 0 1rem;
+  list-style: none;
+  padding: 0;
+  overflow: hidden;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.menu--open {
+  display: block;
+}
+
+.menu button {
+  padding: 0;
+  display: block;
+  appearance: unset;
+  width: 100%;
+}

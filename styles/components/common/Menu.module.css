@@ -26,7 +26,8 @@
 .root__title__caret {
   width: 0.5rem;
   height: 0.5rem;
-  color: inherit;
+  color: var(--background-content-contrast-text-color);
+  fill: var(--background-content-contrast-text-color);
   transition: all 0.5s;
 }
 

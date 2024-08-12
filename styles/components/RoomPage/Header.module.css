@@ -1,10 +1,15 @@
 .root {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   padding: 0.6rem 1rem;
   background-color: var(--primary-color);
   flex-wrap: wrap;
+}
+
+.root > div {
+  display: flex;
+  align-items: center;
 }
 
 .root__content {
@@ -58,12 +63,11 @@
 }
 
 .root__button {
-  margin-bottom: 0 !important;
-  margin-left: 1.5rem !important;
+  margin: 0 0.75rem !important;
 }
 
 .root__qr {
-  margin-left: 1.5rem !important;
+  margin: 0 0.75rem !important;
   width: 1rem;
   height: 1rem;
   cursor: pointer;

@@ -53,4 +53,7 @@
 
 .root__name__master {
   animation: master-animation 1s;
+  color: var(--background-content-contrast-text-color);
+  fill: var(--background-content-contrast-text-color);
+  margin-right: 0.25rem;
 }

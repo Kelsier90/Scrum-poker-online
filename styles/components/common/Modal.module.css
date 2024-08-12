@@ -70,6 +70,7 @@
     top: 1rem;
     right: 1rem;
     background-color: transparent;
+    color: var(--background-content-contrast-text-color);
     font-size: var(--text-lg);
     cursor: pointer;
 }

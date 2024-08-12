@@ -6,6 +6,9 @@
   color: var(--background-content-contrast-text-color);
   cursor: pointer;
   transition: all 0.4s;
+}
+
+.root:not(:last-child) {
   border-bottom: solid 1px var(--muted-color);
 }
 

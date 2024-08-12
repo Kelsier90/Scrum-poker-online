@@ -2,23 +2,21 @@ import styles from '@styles/Home.module.css'
 
 import CreateRoomContainer from '@src/components/HomePage/CreateRoomContainer'
 import JoinRoomContainer from '@src/components/HomePage/JoinRoomContainer'
-import Image from '@src/components/common/Image'
+import GithubSvg from '@src/components/common/illustrations/GithubSvg'
+import ThemeSelector from '@src/components/common/ThemeSelector'
 
 export default function Home() {
   return (
     <div className={styles.root}>
       <header className={styles.header}>
+        <ThemeSelector />
         <a
           href="https://github.com/Kelsier90/Scrum-poker-online"
           target="_blank"
           rel="noreferrer"
+          title="Github repository"
         >
-          <Image
-            src="/GitHub-Mark-32px.png"
-            alt="Github repository"
-            width={32}
-            height={32}
-          />
+          <GithubSvg className={styles.header__icon} />
         </a>
       </header>
 

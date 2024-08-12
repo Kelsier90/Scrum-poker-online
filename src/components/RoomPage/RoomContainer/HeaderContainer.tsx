@@ -10,6 +10,7 @@ import Room from '../../../types/Room'
 import RoomQRModal from './RoomQRModal'
 import CopySvg from '../../common/illustrations/CopySvg'
 import { useNotifications } from '../../common/NotificationsProvider'
+import ThemeSelector from '@src/components/common/ThemeSelector'
 
 interface HeaderContainerProps {
   room: Room
@@ -64,44 +65,50 @@ const HeaderContainer = ({ room }: HeaderContainerProps) => {
   return (
     <>
       <header className={styles.root}>
-        <div className={styles.root__content}>
-          <h1 className={styles.root__content__title}>
-            Room{' '}
-            <span
-              className={styles.root__content__title__id}
-              onClick={handleClickCopyId}
-            >
-              {room.id}
-              <CopySvg className={styles.root__content__title__id__copy} />
-            </span>
-          </h1>
-          <p className={styles.root__info}>
-            {room.users.length} connected user{room.users.length > 1 && 's'}
-          </p>
+        <div>
+          <div className={styles.root__content}>
+            <h1 className={styles.root__content__title}>
+              Room{' '}
+              <span
+                className={styles.root__content__title__id}
+                onClick={handleClickCopyId}
+              >
+                {room.id}
+                <CopySvg className={styles.root__content__title__id__copy} />
+              </span>
+            </h1>
+            <p className={styles.root__info}>
+              {room.users.length} connected user{room.users.length > 1 && 's'}
+            </p>
+          </div>
+
+          <Button
+            size="sm"
+            color={urlWasCopied ? 'success' : 'secondary'}
+            className={styles.root__button}
+            onClick={handleClickCopyUrl}
+          >
+            {urlWasCopied ? 'URL copied' : 'Copy URL'}
+          </Button>
+
+          <QRCodeSvg
+            className={styles.root__qr}
+            onClick={() => setOpenQRModal(true)}
+          />
         </div>
 
-        <Button
-          size="sm"
-          color={urlWasCopied ? 'success' : 'secondary'}
-          className={styles.root__button}
-          onClick={handleClickCopyUrl}
-        >
-          {urlWasCopied ? 'URL copied' : 'Copy URL'}
-        </Button>
+        <div>
+          <ThemeSelector />
 
-        <QRCodeSvg
-          className={styles.root__qr}
-          onClick={() => setOpenQRModal(true)}
-        />
-
-        <Button
-          size="sm"
-          color="primary"
-          className={styles.root__button}
-          onClick={handleClickExit}
-        >
-          Exit
-        </Button>
+          <Button
+            size="sm"
+            color="primary"
+            className={styles.root__button}
+            onClick={handleClickExit}
+          >
+            Exit
+          </Button>
+        </div>
       </header>
 
       <RoomQRModal

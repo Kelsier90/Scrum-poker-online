@@ -6,6 +6,7 @@ import UserContextProvider from '@src/shared/user/UserContextProvider'
 import NotificationsProvider from '@src/components/common/NotificationsProvider'
 import NotificationsContainer from '@src/components/common/NotificationsProvider/NotificationsContainer'
 import TransitionLayout from '@src/components/common/TransitionLayout'
+import ThemeProvider from '@src/components/common/ThemeProvider'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -20,12 +21,14 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <SocketContextProvider>
         <UserContextProvider>
-          <NotificationsProvider>
-            <TransitionLayout>
-              <Component {...pageProps} />
-            </TransitionLayout>
-            <NotificationsContainer />
-          </NotificationsProvider>
+          <ThemeProvider>
+            <NotificationsProvider>
+              <TransitionLayout>
+                <Component {...pageProps} />
+              </TransitionLayout>
+              <NotificationsContainer />
+            </NotificationsProvider>
+          </ThemeProvider>
         </UserContextProvider>
       </SocketContextProvider>
     </>

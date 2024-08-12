@@ -46,6 +46,35 @@
   --breakpoint-xl: 1920px;
 }
 
+
+/* Dark theme */
+[data-theme="dark"] {
+  --primary-color: #7d4e88;
+  --primary-dark-color: #652e72;
+  --primary-light-color: #9d70a8;
+  --secondary-color: #c1ca72;
+  --secondary-dark-color: #9fa942;
+  --muted-color: #969696;
+  --background-color: #262626;
+  --background-content-color: #1c1c1c;
+  --background-overlay-color: #575757d9;
+  --success-color: #309614;
+  --success-dark-color: #1f7001;
+  --alert-color: #c65353;
+  --alert-dark-color: #982020;
+  --info-color: #53c6c4;
+  --info-dark-color: #208a98;
+
+  --background-contrast-text-color: #dcdcdc;
+  --background-content-contrast-text-color: #f5f5f5;
+  --primary-contrast-text-color: #fff;
+  --secondary-contrast-text-color: #000;
+  --success-contrast-text-color: #fff;
+  --alert-contrast-text-color: #fff;
+  --info-contrast-text-color: #000;
+  --subtitle-text-color: #515151;
+}
+
 @media (min-width: 64rem) { /* responsive decision applied to all text elements */
   :root {
     --text-base-size: 1.25em;
