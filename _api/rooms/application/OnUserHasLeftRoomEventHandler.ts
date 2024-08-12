@@ -1,7 +1,7 @@
-import EventHandler from '@api/shared/domain/EventHandler'
-import GetRoom from '@api/rooms/application/GetRoom'
-import RemoveRoom from '@api/rooms/application/RemoveRoom'
-import UserHasJoinedRoomEvent from '@api/rooms/domain/events/UserHasJoinedRoomEvent'
+import EventHandler from "@api/shared/domain/EventHandler";
+import GetRoom from "@api/rooms/application/GetRoom";
+import RemoveRoom from "@api/rooms/application/RemoveRoom";
+import UserHasLeftRoomEvent from "@api/rooms/domain/events/UserHasLeftRoomEvent";
 
 export default class OnUserHasLeftRoomEventHandler implements EventHandler {
   private getRoom: GetRoom
@@ -12,7 +12,7 @@ export default class OnUserHasLeftRoomEventHandler implements EventHandler {
     this.removeRoom = removeRoom
   }
 
-  async handle(event: UserHasJoinedRoomEvent): Promise<void> {
+  async handle(event: UserHasLeftRoomEvent): Promise<void> {
     const room = await this.getRoom.dispatch({
       id: event.aggregateId.getValue()
     })
