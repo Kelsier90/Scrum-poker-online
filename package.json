@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "docker-compose up -d && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "docker-compose up -d && jest --runInBand"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "base64id": "^2.0.0",
